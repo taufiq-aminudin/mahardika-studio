@@ -1,16 +1,6 @@
-# Mahardika Wedding Planner & Studio — Portfolio + Booking
+# Mahardika Wedding Planner & Studio — Separate Portfolio Images
 
-Draft website dengan satu asset gambar saja.
+Website lengkap dengan 6 asset gambar terpisah:
+assets/wedding-1.jpg sampai assets/wedding-6.jpg
 
-## Struktur asset
-- `assets/wedding.jpg` — satu collage 6 panel, dipotong menjadi 6 tampilan portofolio menggunakan CSS.
-
-## Halaman
-- `index.html`
-- `portfolio.html`
-- `booking.html`
-- `admin.html`
-- `style.css`
-- `script.js`
-
-Foto pada draft dapat diganti nanti tanpa mengubah struktur halaman.
+Setiap kartu portofolio menggunakan visual yang berbeda dan disesuaikan dengan judul/tagline project.
