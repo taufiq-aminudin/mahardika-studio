@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Booking | Mahardika</title><link rel="stylesheet" href="style.css"></head>
+<body><header class="adminbar"><div class="wrap"><strong>Mahardika Admin</strong><span>Dashboard Booking</span></div></header>
+<main class="section page"><div class="wrap"><div class="admin-head"><div><p class="kicker">DASHBOARD</p><h1 class="page-title">Data Booking</h1></div><button class="btn dark" id="clearBookings">Hapus Data Demo</button></div><div id="bookingList" class="booking-list"></div></div></main><script>
+const list=document.getElementById('bookingList'); const data=JSON.parse(localStorage.getItem('mahardikaBookings')||'[]');
+if(!data.length){list.innerHTML='<div class="empty">Belum ada booking masuk.</div>'}else{list.innerHTML=data.map((b,i)=>`<article class="booking-item"><div><span class="status">${b.status||'Pending'}</span><h3>${b.name}</h3><p>${b.phone} · ${b.date} · ${b.guests||'-'} tamu</p><p><b>${b.service}</b> · ${b.venue||'Lokasi belum diisi'}</p><p>${b.budget||''}</p><small>${b.notes||'Tidak ada catatan'}</small></div><a class="btn dark" href="https://wa.me/${(b.phone||'').replace(/\\D/g,'')}?text=Halo%20${encodeURIComponent(b.name)},%20terima%20kasih%20atas%20booking%20di%20Mahardika." target="_blank">WhatsApp</a></article>`).join('')}
+document.getElementById('clearBookings').onclick=()=>{if(confirm('Hapus seluruh data booking?')){localStorage.removeItem('mahardikaBookings');location.reload()}}
+</script></body></html>
