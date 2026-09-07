@@ -71,3 +71,17 @@ footer{background:#3a302b}
  .gallery-grid{grid-template-columns:1fr 1fr}
  .gallery-grid .thumb{min-height:125px}
 }
+
+/* Unified site-wide header and footer */
+.header,.header.solid{
+  position:relative;top:auto;left:auto;right:auto;
+  z-index:20;background:rgba(255,255,255,.96);color:#342c28;
+  border-bottom:1px solid #eadfd8;backdrop-filter:blur(10px);
+}
+.header .links{color:#342c28}
+.header .links a:not(.pill){opacity:.9}
+.header .pill{border-color:#b89480;color:#6f503f;background:#fff8f4}
+.header .pill:hover{background:#f4e4dc}
+.header .darklogo b{border-color:#6f5547;color:#342c28}
+footer{background:#392f2a!important;color:#fff}
+footer a{color:#f4d9cb}
