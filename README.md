@@ -1,13 +1,13 @@
-# Mahardika Wedding — Wedding Visual Homepage
+# Mahardika Wedding Planner & Studio
 
-Homepage diperbarui dengan nuansa wedding yang lebih hidup:
-- hero memakai visual wedding nyata
-- palet cream/blush/gold
-- floral accent
-- portfolio preview memakai 6 foto terpisah
-- mengurangi area coklat polos
-- halaman portfolio/booking/admin tetap dipertahankan
+Versi website yang dirapikan:
+- Setiap bagian utama dipisahkan ke halaman: Beranda, Portofolio, Layanan, Paket, Kontak, Booking.
+- Header dan footer konsisten di semua halaman.
+- Konten dekoratif yang tidak perlu dihapus agar halaman lebih fokus.
+- Foto wedding digunakan sebagai visual utama, layanan, portofolio, paket, dan CTA.
+- Booking mengarahkan detail langsung ke WhatsApp 0857-2773-2902.
+- admin.html dipertahankan untuk melihat booking lokal.
 
-Assets:
-- homepage-visual.png
-- wedding-1.jpg ... wedding-6.jpg
+File utama yang dipertahankan:
+index.html, portfolio.html, booking.html, admin.html, style.css, script.js
+Asset tetap menggunakan wedding-1.jpg sampai wedding-6.jpg dan homepage-visual.png.
