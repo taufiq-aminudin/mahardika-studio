@@ -85,3 +85,10 @@ footer{background:#3a302b}
 .header .darklogo b{border-color:#6f5547;color:#342c28}
 footer{background:#392f2a!important;color:#fff}
 footer a{color:#f4d9cb}
+
+.direct-wa{display:flex;gap:16px;align-items:flex-start;margin-top:18px;padding:20px!important;background:#f1f7ee!important;border:1px solid #dbe8d7}
+.wa-icon{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#2f7d45;color:#fff;font-size:22px;flex:0 0 42px}
+.wa-copy strong{display:block;font-size:15px;margin-bottom:4px}
+.wa-copy p{margin:0 0 13px;color:#465247;font-size:12px;line-height:1.5}
+.wa-button{display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border-radius:999px;background:#2f7d45!important;color:#fff!important;font-size:12px;font-weight:700;text-decoration:none!important}
+.wa-button:hover{transform:translateY(-1px)}
