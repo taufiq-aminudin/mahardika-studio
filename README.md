@@ -1,6 +1,13 @@
-# Mahardika Wedding Planner & Studio — Separate Portfolio Images
+# Mahardika Wedding — Wedding Visual Homepage
 
-Website lengkap dengan 6 asset gambar terpisah:
-assets/wedding-1.jpg sampai assets/wedding-6.jpg
+Homepage diperbarui dengan nuansa wedding yang lebih hidup:
+- hero memakai visual wedding nyata
+- palet cream/blush/gold
+- floral accent
+- portfolio preview memakai 6 foto terpisah
+- mengurangi area coklat polos
+- halaman portfolio/booking/admin tetap dipertahankan
 
-Setiap kartu portofolio menggunakan visual yang berbeda dan disesuaikan dengan judul/tagline project.
+Assets:
+- homepage-visual.png
+- wedding-1.jpg ... wedding-6.jpg

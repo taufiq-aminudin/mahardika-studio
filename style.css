@@ -3,63 +3,71 @@
 
 .portfolio-grid .work img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;border-radius:4px}.work-meta{padding-top:12px}.filters small{opacity:.55;margin-left:3px}.filters{gap:10px}
 
-/* ===== Homepage refresh: lighter, warmer, wedding-led ===== */
-:root{--rose:#b97c78;--rose-soft:#f3dfdc;--blush:#f8ece8;--green:#7f8e78}
-body{background:#fffdf9}
-.wedding-hero{min-height:720px;padding:0;position:relative;overflow:hidden;color:var(--ink);background:linear-gradient(90deg,#fffaf6 0%,#fff6f2 55%,#f7e8e3 100%)}
-.wedding-hero:after{display:none}
-.wedding-hero .hero-content{width:min(1180px,calc(100% - 40px));padding-top:95px;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:50px;position:relative;z-index:2}
-.hero-copy-block{position:relative;z-index:3;max-width:610px}
-.wedding-hero .eyebrow{color:#9b6a64;opacity:1}
-.wedding-hero h1{color:#332824;font-size:clamp(52px,6.5vw,82px);margin:12px 0 16px}
-.wedding-hero h1 i{color:#9d6f69}
-.wedding-hero .lead{color:#6d625c;max-width:580px;font-size:16px}
-.script{font:italic 28px "Brush Script MT","Segoe Script",cursive;color:#b47770;margin:28px 0 0;transform:rotate(-4deg);transform-origin:left}
-.wedding-hero .actions{margin-top:28px}
-.btn.rose{background:#b87b76;color:#fff;box-shadow:0 10px 25px rgba(184,123,118,.22)}
-.btn.soft-outline{border:1px solid #ceb8b0;color:#5d4c45;background:rgba(255,255,255,.55)}
-.hero-note{color:#7d6e67;opacity:1;margin-top:38px}
-.hero-note span{background:rgba(255,255,255,.5);border:1px solid #eadbd4;padding:8px 12px;border-radius:99px}
-.hero-visual{height:600px;position:relative;display:flex;align-items:center;justify-content:center}
-.hero-visual:before{content:"";position:absolute;width:430px;height:500px;background:#ead6cf;border-radius:48% 48% 18% 18%;transform:rotate(5deg);right:65px;top:35px}
-.hero-visual img{position:relative;z-index:2;width:390px;height:515px;object-fit:cover;border-radius:190px 190px 26px 26px;box-shadow:0 25px 55px rgba(101,73,63,.18)}
-.visual-card{position:absolute;z-index:4;left:20px;bottom:52px;background:#fffdf9;padding:16px 18px;box-shadow:0 18px 35px rgba(76,55,48,.12);border:1px solid #eadfd9;min-width:155px}
-.visual-card span{display:block;font-size:9px;letter-spacing:.18em;color:#ae7a72;font-weight:700;margin-bottom:7px}
-.visual-card b{font:17px Georgia;color:#3b302b}
-.visual-badge{position:absolute;z-index:4;right:5px;top:80px;background:#fffdf9;border:1px solid #eadfd9;border-radius:50%;width:112px;height:112px;display:grid;place-items:center;text-align:center;font:italic 15px Georgia;color:#96706a;line-height:1.15;box-shadow:0 15px 35px rgba(76,55,48,.10)}
-.hero-flower{position:absolute;border-radius:50%;filter:blur(.2px);opacity:.65}
-.flower-one{width:170px;height:170px;left:-65px;top:120px;background:radial-gradient(circle,#e9b9b4 0 10%,transparent 11%),radial-gradient(circle at 35% 45%,#f3d9d5 0 13%,transparent 14%),radial-gradient(circle at 60% 60%,#d9a09b 0 12%,transparent 13%);background-size:55px 55px,62px 62px,60px 60px}
-.flower-two{width:150px;height:150px;right:-55px;bottom:35px;background:radial-gradient(circle,#e8c39a 0 9%,transparent 10%),radial-gradient(circle at 35% 60%,#e7b5b0 0 13%,transparent 14%),radial-gradient(circle at 70% 35%,#fff 0 11%,transparent 12%);background-size:50px 50px,64px 64px,58px 58px}
-.intro{background:#fff}
-.intro-grid{align-items:start}
-.intro h2{max-width:530px}
-.stats div{background:var(--blush);padding:12px 16px;border-radius:10px}
-.stats{border-top:0;gap:12px}
-.services{background:#fff}
-.service-grid article{border-radius:18px;background:linear-gradient(180deg,#fff,#fff8f5);border-color:#eee2dc}
-.service-grid article:hover{box-shadow:0 18px 35px rgba(75,55,45,.10)}
-.service-icon{color:var(--rose)}
-.showcase{background:#fcf5f1}
-.showcase-image img{border-radius:24px}
-.packages{background:#fff}
-.package-grid article{border-radius:18px}
-.booking-strip{background:linear-gradient(135deg,#b87974,#8e625e)}
-.footer{background:#3a2d29}
-@media(max-width:900px){
-  .wedding-hero .hero-content{grid-template-columns:1fr;padding-top:110px}
-  .hero-visual{height:470px;margin-top:-10px}
-  .hero-visual img{width:300px;height:390px}
-  .hero-visual:before{width:330px;height:400px}
+/* Wedding visual refinement */
+:root{
+  --ink:#302824; --muted:#756b64; --cream:#fcf8f4; --blush:#f4e5df;
+  --rose:#c89082; --gold:#a98461; --line:#eaded6; --white:#fff;
+}
+body{background:var(--cream);color:var(--ink)}
+.hero{
+  min-height:700px;
+  color:#2f2723;
+  background:
+    linear-gradient(90deg,rgba(255,249,245,.96) 0%,rgba(255,249,245,.82) 41%,rgba(255,249,245,.18) 72%,rgba(255,249,245,.05) 100%),
+    url('assets/homepage-visual.png') right center/cover no-repeat;
+  position:relative; overflow:hidden;
+}
+.hero:before{
+  content:"";position:absolute;width:460px;height:460px;border-radius:50%;
+  left:-180px;bottom:-240px;background:rgba(246,220,211,.55);
+  filter:blur(5px)
+}
+.hero:after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:100px;
+  background:linear-gradient(transparent,rgba(252,248,244,.98))
+}
+.hero-inner{position:relative;z-index:2}
+.hero h1{color:#2b2420}
+.hero h1 i{color:#a57262}
+.hero .lead{color:#5f554f}
+.actions .dark{background:#9c7562}
+.actions .outline{color:#6b5146;border-color:#cdb8ac}
+.section{background:var(--cream)}
+.feature,.gallery{background:#fff}
+.booking-strip{
+  background:
+  linear-gradient(120deg,rgba(76,53,43,.90),rgba(142,104,87,.65)),
+  url('assets/wedding-6.jpg') center/cover no-repeat;
+}
+.services article{
+  background:rgba(255,255,255,.96);
+  border-color:#eee0d7;
+  border-radius:18px;
+}
+.services article:hover{box-shadow:0 18px 45px rgba(118,86,72,.12)}
+.feature-photo{
+  border-radius:24px;
+  background:url('assets/wedding-3.jpg') center/cover no-repeat;
+  box-shadow:0 20px 50px rgba(92,62,50,.16);
+}
+.feature-photo:after{border-radius:20px}
+.gallery-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.gallery-grid .thumb{border-radius:16px;overflow:hidden;min-height:150px;background-size:cover;background-position:center;position:relative}
+.gallery-grid .thumb span{position:absolute;left:12px;bottom:10px;color:#fff;font-size:11px;font-weight:700;text-shadow:0 2px 10px #000}
+.wedding-flowers{position:absolute;right:-70px;top:-80px;width:260px;height:260px;border-radius:50%;
+background:radial-gradient(circle at 35% 35%,#fff 0 13%,#efcfc6 14% 28%,transparent 29%),
+radial-gradient(circle at 65% 55%,#f4ddd6 0 13%,#dba99d 14% 26%,transparent 27%);
+filter:blur(.2px);opacity:.65}
+.section-heading h2,.heading h2{color:#302824}
+.kicker{color:#a47361}
+footer{background:#3a302b}
+@media(max-width:800px){
+ .hero{background-position:62% center}
+ .gallery-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:560px){
-  .wedding-hero{min-height:920px}
-  .wedding-hero .hero-content{width:calc(100% - 28px);padding-top:95px;gap:15px}
-  .wedding-hero h1{font-size:49px}
-  .script{font-size:24px}
-  .hero-visual{height:390px}
-  .hero-visual img{width:245px;height:320px}
-  .hero-visual:before{width:270px;height:330px;right:30px}
-  .visual-card{left:4px;bottom:24px}
-  .visual-badge{right:0;top:10px;width:92px;height:92px;font-size:13px}
-  .hero-note{gap:8px}
+ .hero{min-height:650px;background-position:64% center}
+ .hero h1{font-size:48px}
+ .gallery-grid{grid-template-columns:1fr 1fr}
+ .gallery-grid .thumb{min-height:125px}
 }
