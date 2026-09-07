@@ -1,12 +1,11 @@
-# Mahardika Wedding Planner & Studio — Portofolio + Booking
+# Mahardika Wedding Planner & Studio — Draft Portofolio + Booking
 
-Halaman:
-- index.html — landing page
-- portfolio.html — portofolio dengan filter kategori
-- booking.html — form booking online
-- admin.html — dashboard sederhana untuk melihat booking
+Semua halaman sudah dibuat dengan isi draft visual agar tidak ada area kosong:
+- Beranda: hero, tentang, statistik, layanan, style, paket, testimonial, proses booking, CTA.
+- Portofolio: 6 project draft dengan visual SVG, kategori dan filter.
+- Booking: form konsultasi lengkap + penerusan detail ke WhatsApp.
+- Admin: dashboard prototype membaca booking dari localStorage.
 
-Booking tersimpan di localStorage browser dan dapat diteruskan ke WhatsApp 0857-2773-2902.
+Visual SVG di assets/ adalah gambar draft buatan lokal, sehingga tidak bergantung pada gambar online. Ganti dengan foto asli Mahardika saat tersedia.
 
-Catatan produksi:
-Untuk booking multi-user yang benar-benar tersimpan di server, dashboard login, kalender ketersediaan, pembayaran/DP, dan database, tahap berikutnya perlu backend/database.
+Untuk produksi multi-pengguna: backend/database, login admin, kalender ketersediaan, status booking, invoice/DP, dan upload foto portofolio perlu ditambahkan.
