@@ -1,0 +1,8 @@
+{
+  "name": "Mahardika Wedding Planner & Studio",
+  "description": "Mahardika Wedding Planner & Studio — wedding planner, dekorasi dan dokumentasi di Badran, Jawa Tengah.",
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ],
+  "permissions": []
+}
