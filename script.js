@@ -1,6 +1,6 @@
 /**
  * Mahardika Wedding Planner & Studio
- * Interactive Scripts: Navigation, Filtering, Calculator, Lightbox, Booking, and Admin
+ * Interactive Scripts: Navigation, Filtering, Price Estimator Tool, Lightbox, Booking, and Admin
  */
 
 // 1. Mobile Menu Navigation
@@ -97,79 +97,339 @@ if (lightbox) {
   });
 }
 
-// 4. Interactive Wedding Cost Calculator (on packages.html)
-const calcForm = document.getElementById('weddingCalculator');
-if (calcForm) {
+// 4. Interactive Price Estimator Tool (in Packages section)
+function initPriceEstimator() {
+  const calcForm = document.getElementById('weddingCalculator');
+  if (!calcForm) return;
+
   const packageSelect = document.getElementById('calcPackage');
+  const pkgCards = document.querySelectorAll('.calc-pkg-card');
+  const selectedPkgBadge = document.getElementById('selectedPkgBadge');
   const guestsInput = document.getElementById('calcGuests');
   const guestsVal = document.getElementById('calcGuestsVal');
+  const presetBtns = document.querySelectorAll('.calc-preset-btn');
+  const addonItems = document.querySelectorAll('.calc-addon-item');
   const addonCheckboxes = document.querySelectorAll('.calc-addon');
+  const addonCountBadge = document.getElementById('addonCountBadge');
+  const receiptPkgName = document.getElementById('receiptPkgName');
+  const receiptPkgBase = document.getElementById('receiptPkgBase');
+  const receiptGuestScale = document.getElementById('receiptGuestScale');
+  const receiptAddonCount = document.getElementById('receiptAddonCount');
+  const receiptAddonsSubtotal = document.getElementById('receiptAddonsSubtotal');
+  const activeAddonsWrap = document.getElementById('activeAddonsWrap');
+  const activeAddonsTags = document.getElementById('activeAddonsTags');
   const estTotalEl = document.getElementById('estTotal');
   const estRangeEl = document.getElementById('estRange');
-  const calcWaBtn = document.getElementById('calcWaBtn');
   const calcBookBtn = document.getElementById('calcBookBtn');
+  const calcWaBtn = document.getElementById('calcWaBtn');
+  const calcResetBtn = document.getElementById('calcResetBtn');
 
-  const basePrices = {
-    'essential': { base: 15000000, perGuest: 20000, name: 'Essential (Mulai Rp15 Juta)' },
-    'signature': { base: 35000000, perGuest: 35000, name: 'Signature (Mulai Rp35 Juta)' },
-    'full': { base: 65000000, perGuest: 50000, name: 'Mahardika Full Service (Custom)' }
+  // Base Package configurations
+  const basePackages = {
+    'essential': {
+      name: 'Paket Essential',
+      badgeText: 'Essential (Rp15 Jt)',
+      price: 15000000,
+      includedGuests: 200,
+      guestRate: 20000,
+      minPrice: 14000000
+    },
+    'signature': {
+      name: 'Paket Signature',
+      badgeText: 'Signature (Rp35 Jt)',
+      price: 35000000,
+      includedGuests: 300,
+      guestRate: 25000,
+      minPrice: 33000000
+    },
+    'full': {
+      name: 'Mahardika Full Service',
+      badgeText: 'Full Service (Rp65 Jt)',
+      price: 65000000,
+      includedGuests: 400,
+      guestRate: 35000,
+      minPrice: 60000000
+    },
+    'wo_only': {
+      name: 'Day-of Coordination WO Saja',
+      badgeText: 'WO Hari H (Rp8,5 Jt)',
+      price: 8500000,
+      includedGuests: 300,
+      guestRate: 15000,
+      minPrice: 8000000
+    }
   };
 
-  function updateCalculation() {
-    const pkgKey = packageSelect?.value || 'signature';
-    const guests = parseInt(guestsInput?.value || '300', 10);
-    if (guestsVal) guestsVal.textContent = guests.toLocaleString('id-ID');
+  // Currency Formatter
+  function formatIDR(amount) {
+    return 'Rp ' + Math.round(amount).toLocaleString('id-ID');
+  }
 
-    const pkgData = basePrices[pkgKey] || basePrices.signature;
-    let addonsTotal = 0;
-    const selectedAddonNames = [];
+  function getSelectedPackageKey() {
+    const checkedRadio = document.querySelector('input[name="pkgOption"]:checked');
+    if (checkedRadio) return checkedRadio.value;
+    return packageSelect ? packageSelect.value : 'signature';
+  }
 
-    addonCheckboxes.forEach(cb => {
-      if (cb.checked) {
-        addonsTotal += parseInt(cb.value, 10);
-        selectedAddonNames.push(cb.dataset.name || cb.parentElement.textContent.trim());
+  function setSelectedPackage(key) {
+    if (!basePackages[key]) key = 'signature';
+
+    // Sync radio
+    const targetRadio = document.querySelector(`input[name="pkgOption"][value="${key}"]`);
+    if (targetRadio) targetRadio.checked = true;
+
+    // Sync hidden select if present
+    if (packageSelect) packageSelect.value = key;
+
+    // Update card styling
+    pkgCards.forEach(card => {
+      const isSelected = card.dataset.pkgVal === key;
+      card.classList.toggle('selected', isSelected);
+    });
+
+    updateCalculation();
+  }
+
+  // Handle Radio card clicks
+  pkgCards.forEach(card => {
+    card.addEventListener('click', (e) => {
+      const key = card.dataset.pkgVal;
+      if (key) setSelectedPackage(key);
+    });
+  });
+
+  // Handle "Simulasikan di Estimator" buttons from package cards at top
+  const pickButtons = document.querySelectorAll('.btn-calc-pick');
+  pickButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.package;
+      if (key) {
+        setSelectedPackage(key);
+        const calcEl = document.getElementById('calculator');
+        if (calcEl) {
+          calcEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    });
+  });
+
+  // Handle Guest Slider & Presets
+  function setGuests(val) {
+    const num = parseInt(val, 10) || 300;
+    if (guestsInput) guestsInput.value = num;
+    if (guestsVal) guestsVal.textContent = num.toLocaleString('id-ID');
+
+    presetBtns.forEach(b => {
+      const bVal = parseInt(b.dataset.guests, 10);
+      b.classList.toggle('active', bVal === num);
+    });
+
+    updateCalculation();
+  }
+
+  guestsInput?.addEventListener('input', (e) => {
+    setGuests(e.target.value);
+  });
+
+  presetBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      setGuests(btn.dataset.guests);
+    });
+  });
+
+  // Handle Addon Selection
+  addonItems.forEach(item => {
+    const cb = item.querySelector('input[type="checkbox"]');
+    if (!cb) return;
+
+    // Sync item click (unless target is the checkbox itself)
+    item.addEventListener('click', (e) => {
+      if (e.target !== cb) {
+        cb.checked = !cb.checked;
+        cb.dispatchEvent(new Event('change'));
       }
     });
 
-    const estBase = pkgData.base + (guests * pkgData.perGuest) + addonsTotal;
-    const estMin = Math.round(estBase * 0.95 / 1000000) * 1000000;
-    const estMax = Math.round(estBase * 1.15 / 1000000) * 1000000;
+    cb.addEventListener('change', () => {
+      item.classList.toggle('selected', cb.checked);
+      updateCalculation();
+    });
+  });
 
+  // Reset Button
+  calcResetBtn?.addEventListener('click', () => {
+    // Uncheck all add-ons
+    addonCheckboxes.forEach(cb => {
+      cb.checked = false;
+      const parent = cb.closest('.calc-addon-item');
+      if (parent) parent.classList.remove('selected');
+    });
+
+    // Reset guests to 300
+    setGuests(300);
+
+    // Keep or reset to signature
+    setSelectedPackage('signature');
+  });
+
+  // Calculation Core Logic
+  function updateCalculation() {
+    const pkgKey = getSelectedPackageKey();
+    const pkg = basePackages[pkgKey] || basePackages.signature;
+    const guests = parseInt(guestsInput?.value || '300', 10);
+
+    if (guestsVal) guestsVal.textContent = guests.toLocaleString('id-ID');
+    if (selectedPkgBadge) selectedPkgBadge.textContent = pkg.badgeText;
+
+    // 1. Guest Scale Nominal Adjustment (extra logistics if over base included threshold)
+    let guestAdjustment = 0;
+    if (guests > pkg.includedGuests) {
+      guestAdjustment = (guests - pkg.includedGuests) * pkg.guestRate;
+    }
+
+    // 2. Add-ons Total & Breakdown
+    let addonsTotal = 0;
+    const selectedAddons = [];
+
+    addonCheckboxes.forEach(cb => {
+      if (cb.checked) {
+        const price = parseInt(cb.value, 10) || 0;
+        const name = cb.dataset.name || cb.closest('.calc-addon-item')?.querySelector('strong')?.textContent.trim() || 'Layanan Tambahan';
+        addonsTotal += price;
+        selectedAddons.push({ name, price, checkbox: cb });
+      }
+    });
+
+    // 3. Total Calculation
+    const totalCost = pkg.price + guestAdjustment + addonsTotal;
+    const rangeMin = Math.round(totalCost * 0.95 / 1000000) * 1000000;
+    const rangeMax = Math.round(totalCost * 1.15 / 1000000) * 1000000;
+
+    // 4. Update Receipt Elements
+    if (receiptPkgName) receiptPkgName.textContent = pkg.name;
+    if (receiptPkgBase) receiptPkgBase.textContent = formatIDR(pkg.price);
+
+    if (receiptGuestScale) {
+      if (guestAdjustment > 0) {
+        receiptGuestScale.textContent = `${guests} Tamu (+${formatIDR(guestAdjustment)})`;
+      } else {
+        receiptGuestScale.textContent = `${guests} Tamu (Standar included)`;
+      }
+    }
+
+    if (receiptAddonCount) receiptAddonCount.textContent = selectedAddons.length;
+    if (receiptAddonsSubtotal) receiptAddonsSubtotal.textContent = (addonsTotal > 0 ? '+' : '') + formatIDR(addonsTotal);
+
+    if (addonCountBadge) {
+      addonCountBadge.textContent = selectedAddons.length > 0
+        ? `${selectedAddons.length} Layanan Terpilih (+${formatIDR(addonsTotal)})`
+        : 'Pilih layanan yang dibutuhkan';
+    }
+
+    // 5. Render Active Addons Tag Pills
+    if (activeAddonsWrap && activeAddonsTags) {
+      if (selectedAddons.length > 0) {
+        activeAddonsWrap.style.display = 'block';
+        activeAddonsTags.innerHTML = selectedAddons.map((item, idx) => `
+          <span class="addon-tag">
+            ${escapeHtml(item.name)}
+            <button type="button" aria-label="Hapus ${escapeHtml(item.name)}" data-addon-idx="${idx}">×</button>
+          </span>
+        `).join('');
+
+        // Attach tag removal events
+        activeAddonsTags.querySelectorAll('button[data-addon-idx]').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const idx = parseInt(btn.dataset.addonIdx, 10);
+            if (selectedAddons[idx] && selectedAddons[idx].checkbox) {
+              selectedAddons[idx].checkbox.checked = false;
+              selectedAddons[idx].checkbox.dispatchEvent(new Event('change'));
+            }
+          });
+        });
+      } else {
+        activeAddonsWrap.style.display = 'none';
+        activeAddonsTags.innerHTML = '';
+      }
+    }
+
+    // 6. Update Total Display
     if (estTotalEl) {
-      estTotalEl.textContent = `Rp ${Math.round(estBase / 1000000)} Juta`;
+      estTotalEl.textContent = formatIDR(totalCost);
     }
     if (estRangeEl) {
-      estRangeEl.textContent = `Estimasi kisaran: Rp ${(estMin / 1000000).toFixed(0)} Jt – Rp ${(estMax / 1000000).toFixed(0)} Jt (tergantung venue & vendor)`;
+      const minJt = (rangeMin / 1000000).toFixed(0);
+      const maxJt = (rangeMax / 1000000).toFixed(0);
+      estRangeEl.textContent = `Estimasi kisaran: Rp ${minJt} Jt – Rp ${maxJt} Jt (disesuaikan lokasi & kustomisasi)`;
     }
 
-    const waText = `Halo Mahardika Wedding Planner & Studio,%0A%0ASaya mencoba Simulasi Estimasi Biaya di website:%0A- Paket: ${encodeURIComponent(pkgData.name)}%0A- Estimasi Tamu: ${guests} orang%0A- Tambahan Layanan: ${encodeURIComponent(selectedAddonNames.join(', ') || 'Standar')}%0A- Estimasi Simulasi: Rp ${Math.round(estBase / 1000000)} Juta%0A%0AMohon info ketersediaan tanggal dan konsultasi lebih lanjut.`;
-    
-    if (calcWaBtn) {
-      calcWaBtn.href = `https://wa.me/6285727732902?text=${waText}`;
-    }
+    // 7. Update Action URLs
+    const budgetCategory = totalCost < 25000000
+      ? 'Di bawah Rp25 juta'
+      : (totalCost <= 50000000 ? 'Rp25–50 juta' : (totalCost <= 100000000 ? 'Rp50–100 juta' : 'Di atas Rp100 juta'));
+
+    const addonNamesList = selectedAddons.map(a => a.name);
+    const formattedTotal = formatIDR(totalCost);
+
+    // Booking Button URL
     if (calcBookBtn) {
-      const budgetOption = estBase < 25000000 ? 'Di bawah Rp25 juta' : (estBase <= 50000000 ? 'Rp25–50 juta' : (estBase <= 100000000 ? 'Rp50–100 juta' : 'Di atas Rp100 juta'));
-      calcBookBtn.href = `booking.html?package=${encodeURIComponent(pkgData.name)}&guests=${guests}&budget=${encodeURIComponent(budgetOption)}&notes=${encodeURIComponent('Hasil simulasi kalkulator website: ' + selectedAddonNames.join(', '))}`;
+      const bookParams = new URLSearchParams();
+      bookParams.set('package', pkg.name);
+      bookParams.set('guests', guests.toString());
+      bookParams.set('budget', budgetCategory);
+      if (addonNamesList.length > 0) {
+        bookParams.set('addons', addonNamesList.join(', '));
+      }
+      bookParams.set('total', formattedTotal);
+      calcBookBtn.href = `booking.html?${bookParams.toString()}`;
+    }
+
+    // WhatsApp Message URL
+    if (calcWaBtn) {
+      let waText = `Halo Tim Mahardika Wedding Planner & Studio,%0A%0A` +
+        `Saya mencoba *Simulasi Price Estimator* di website:%0A` +
+        `• *Paket Dasar:* ${encodeURIComponent(pkg.name)} (${formatIDR(pkg.price)})%0A` +
+        `• *Perkiraan Tamu:* ${guests} orang%0A`;
+
+      if (addonNamesList.length > 0) {
+        waText += `• *Layanan Tambahan (Add-ons):*%0A`;
+        selectedAddons.forEach(a => {
+          waText += `  - ${encodeURIComponent(a.name)} (+${formatIDR(a.price)})%0A`;
+        });
+        waText += `• *Subtotal Add-ons:* +${formatIDR(addonsTotal)}%0A`;
+      } else {
+        waText += `• *Layanan Tambahan:* (Belum memilih add-on)%0A`;
+      }
+
+      waText += `• *TOTAL ESTIMASI BIAYA:* *${encodeURIComponent(formattedTotal)}*%0A%0A` +
+        `Apakah tanggal pernikahan kami masih tersedia untuk konsultasi lebih lanjut?`;
+
+      calcWaBtn.href = `https://wa.me/6285727732902?text=${waText}`;
     }
   }
 
-  packageSelect?.addEventListener('change', updateCalculation);
-  guestsInput?.addEventListener('input', updateCalculation);
-  addonCheckboxes.forEach(cb => cb.addEventListener('change', updateCalculation));
+  function escapeHtml(str) {
+    return String(str || '').replace(/[&<>'"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
+  }
+
+  // Initial calculation
   updateCalculation();
 }
 
 // 5. Booking Form Handling & URL Prefill (on booking.html)
 const form = document.getElementById('bookingForm');
 if (form) {
-  // Prefill from URL query params
   const urlParams = new URLSearchParams(window.location.search);
   const paramService = urlParams.get('service') || urlParams.get('package');
   const paramGuests = urlParams.get('guests');
   const paramBudget = urlParams.get('budget');
+  const paramAddons = urlParams.get('addons');
+  const paramTotal = urlParams.get('total');
   const paramNotes = urlParams.get('notes');
   const paramConcept = urlParams.get('concept');
 
+  // Prefill Service
   if (paramService) {
     const serviceSelect = form.querySelector('[name="service"]');
     if (serviceSelect) {
@@ -181,10 +441,14 @@ if (form) {
       }
     }
   }
+
+  // Prefill Guests
   if (paramGuests) {
     const guestsField = form.querySelector('[name="guests"]');
     if (guestsField) guestsField.value = paramGuests;
   }
+
+  // Prefill Budget
   if (paramBudget) {
     const budgetSelect = form.querySelector('[name="budget"]');
     if (budgetSelect) {
@@ -193,10 +457,23 @@ if (form) {
       }
     }
   }
-  if (paramNotes || paramConcept) {
-    const notesField = form.querySelector('[name="notes"]');
-    if (notesField) {
-      notesField.value = [paramConcept ? `Konsep: ${paramConcept}` : '', paramNotes || ''].filter(Boolean).join('\n');
+
+  // Prefill Notes with Estimator Result if available
+  const notesField = form.querySelector('[name="notes"]');
+  if (notesField) {
+    const noteLines = [];
+    if (paramTotal || paramAddons) {
+      noteLines.push(`[Hasil Simulasi Price Estimator Website]:`);
+      if (paramService) noteLines.push(`• Paket Dasar: ${paramService}`);
+      if (paramTotal) noteLines.push(`• Total Estimasi Biaya: ${paramTotal}`);
+      if (paramAddons) noteLines.push(`• Layanan Tambahan (Add-ons): ${paramAddons}`);
+      noteLines.push(``);
+    }
+    if (paramConcept) noteLines.push(`Konsep Pilihan: ${paramConcept}`);
+    if (paramNotes) noteLines.push(paramNotes);
+
+    if (noteLines.length > 0) {
+      notesField.value = noteLines.join('\n');
     }
   }
 
@@ -242,7 +519,7 @@ if (form) {
       `*Lokasi / Venue:* ${encodeURIComponent(b.venue || '-')}%0A` +
       `*Pilihan Layanan:* ${encodeURIComponent(b.service)}%0A` +
       `*Estimasi Alokasi Dana:* ${encodeURIComponent(b.budget || '-')}%0A` +
-      `*Catatan Khusus / Konsep:* ${encodeURIComponent(b.notes || '-')}`;
+      `*Catatan Khusus / Estimasi Add-ons:* ${encodeURIComponent(b.notes || '-')}`;
 
     const wa = document.getElementById('waBooking');
     if (wa) {
@@ -261,3 +538,8 @@ if (form) {
     }
   });
 }
+
+// Initialize on DOM ready
+document.addEventListener('DOMContentLoaded', () => {
+  initPriceEstimator();
+});

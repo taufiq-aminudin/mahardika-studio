@@ -58,6 +58,7 @@
               <li><strong>1x Technical Meeting:</strong> Gladi bersih bersama keluarga besar & venue.</li>
             </ul>
             <a class="btn dark" href="booking.html?service=Essential">Pilih Paket Essential →</a>
+            <button type="button" class="btn ghost btn-calc-pick" data-package="essential" style="margin-top:8px; font-size:12px; min-height:38px;">Simulasikan di Estimator ↓</button>
           </article>
 
           <!-- Package 2: Signature -->
@@ -76,6 +77,7 @@
               <li><strong>Pendampingan Adat:</strong> Fasilitasi prosesi adat Jawa / modern rundown.</li>
             </ul>
             <a class="btn primary" href="booking.html?service=Signature">Pilih Paket Signature →</a>
+            <button type="button" class="btn ghost btn-calc-pick" data-package="signature" style="margin-top:8px; font-size:12px; min-height:38px;">Simulasikan di Estimator ↓</button>
           </article>
 
           <!-- Package 3: Mahardika Full -->
@@ -93,79 +95,273 @@
               <li><strong>VIP Hospitality:</strong> Liaison Officer khusus pengantin & orang tua kedua mempelai.</li>
             </ul>
             <a class="btn dark" href="booking.html?service=Full+Service">Minta Penawaran Kustom →</a>
+            <button type="button" class="btn ghost btn-calc-pick" data-package="full" style="margin-top:8px; font-size:12px; min-height:38px;">Simulasikan di Estimator ↓</button>
           </article>
         </div>
 
-        <!-- Interactive Cost Calculator -->
+        <!-- Interactive Price Estimator Tool in Packages Section -->
         <div class="calculator-box" id="calculator">
-          <div class="section-head">
-            <p class="kicker">SIMULASI INTERAKTIF</p>
+          <div class="section-head" style="margin-bottom: 26px;">
+            <p class="kicker">PRICE ESTIMATOR TOOL</p>
             <h2>Kalkulator Estimasi Biaya Pernikahan</h2>
-            <p style="color: var(--muted); margin-top: 6px;">Hitung perkiraan kebutuhan anggaran pernikahan Anda secara dinamis berdasarkan paket, jumlah tamu, dan tambahan layanan.</p>
+            <p style="color: var(--muted); margin-top: 6px; font-size: 15px; max-width: 780px;">
+              Gunakan simulasi interaktif ini untuk menghitung estimasi anggaran pernikahan Anda. Pilih paket dasar, sesuaikan perkiraan jumlah tamu, dan tambahkan opsi layanan add-ons untuk melihat total biaya secara langsung dan transparan.
+            </p>
           </div>
 
           <form id="weddingCalculator" class="calc-grid" onsubmit="return false;">
+            <!-- Controls Column -->
             <div class="calc-controls">
+              <!-- Base Package Selection -->
               <div class="calc-field">
-                <label for="calcPackage">Pilih Dasar Paket</label>
-                <select id="calcPackage">
-                  <option value="essential">Paket Essential (Intimate · Mulai Rp15 Juta)</option>
-                  <option value="signature" selected>Paket Signature (Lengkap & Terpopuler · Mulai Rp35 Juta)</option>
-                  <option value="full">Paket Mahardika Full Service (All-in VIP · Mulai Rp65 Juta)</option>
+                <div class="calc-field-title">
+                  <span>1. Pilih Paket Dasar Pernikahan:</span>
+                  <span id="selectedPkgBadge" style="font-size: 11.5px; color: var(--rose); font-weight: 700;">Signature (Rp35 Jt)</span>
+                </div>
+                
+                <!-- Hidden select for form value binding -->
+                <select id="calcPackage" style="display:none;" aria-label="Pilih Paket Dasar">
+                  <option value="essential">Paket Essential (Intimate · Rp15 Juta)</option>
+                  <option value="signature" selected>Paket Signature (Lengkap · Rp35 Juta)</option>
+                  <option value="full">Paket Mahardika Full Service (VIP · Rp65 Juta)</option>
+                  <option value="wo_only">Day-of Coordination WO Saja (Rp8,5 Juta)</option>
                 </select>
-              </div>
 
-              <div class="calc-field">
-                <label for="calcGuests">
-                  Estimasi Jumlah Undangan: <strong><span id="calcGuestsVal">300</span> Tamu</strong>
-                </label>
-                <input type="range" id="calcGuests" min="100" max="1500" step="50" value="300">
-                <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--muted); margin-top:4px;">
-                  <span>100 Tamu (Intimate)</span>
-                  <span>500 Tamu (Gedung Sedang)</span>
-                  <span>1500 Tamu (Ballroom / Lapangan)</span>
+                <!-- Interactive Base Package Radio Cards -->
+                <div class="calc-pkg-grid" role="radiogroup" aria-label="Pilihan Paket Dasar">
+                  <label class="calc-pkg-card" data-pkg-val="essential">
+                    <input type="radio" name="pkgOption" value="essential">
+                    <div class="calc-pkg-header">
+                      <span class="pkg-tag">INTIMATE</span>
+                      <strong>Essential</strong>
+                    </div>
+                    <p class="pkg-desc">Backdrop 6–8m, meja akad, & tim WO 4 personil.</p>
+                    <div class="pkg-price">Rp 15.000.000</div>
+                  </label>
+
+                  <label class="calc-pkg-card selected" data-pkg-val="signature">
+                    <input type="radio" name="pkgOption" value="signature" checked>
+                    <div class="calc-pkg-header">
+                      <span class="pkg-tag">PALING POPULER</span>
+                      <strong>Signature</strong>
+                    </div>
+                    <p class="pkg-desc">Full planning, panggung 10–12m, foto video, & WO 8–10 kru.</p>
+                    <div class="pkg-price">Rp 35.000.000</div>
+                  </label>
+
+                  <label class="calc-pkg-card" data-pkg-val="full">
+                    <input type="radio" name="pkgOption" value="full">
+                    <div class="calc-pkg-header">
+                      <span class="pkg-tag">ALL-IN VIP</span>
+                      <strong>Full Service</strong>
+                    </div>
+                    <p class="pkg-desc">Grand decor 14–18m, prewed, drone 4K, & VIP liaison.</p>
+                    <div class="pkg-price">Rp 65.000.000</div>
+                  </label>
+
+                  <label class="calc-pkg-card" data-pkg-val="wo_only">
+                    <input type="radio" name="pkgOption" value="wo_only">
+                    <div class="calc-pkg-header">
+                      <span class="pkg-tag">COORDINATION</span>
+                      <strong>WO Hari H Saja</strong>
+                    </div>
+                    <p class="pkg-desc">Pengawalan teknis vendor & rundown hari H lengkap.</p>
+                    <div class="pkg-price">Rp 8.500.000</div>
+                  </label>
                 </div>
               </div>
 
+              <!-- Guest Count Slider -->
               <div class="calc-field">
-                <label>Pilihan Layanan Tambahan (Add-Ons):</label>
+                <div class="calc-field-title">
+                  <span>2. Perkiraan Jumlah Undangan:</span>
+                  <span style="font-size: 14px; color: #8e604d;"><strong><span id="calcGuestsVal">300</span> Undangan / Tamu</strong></span>
+                </div>
+                <input type="range" id="calcGuests" min="100" max="1500" step="50" value="300" aria-label="Jumlah Tamu">
+                
+                <div class="calc-presets">
+                  <span style="font-size: 11px; color: var(--muted); align-self: center; margin-right: 4px;">Pilihan Cepat:</span>
+                  <button type="button" class="calc-preset-btn" data-guests="100">100 (Intimate)</button>
+                  <button type="button" class="calc-preset-btn active" data-guests="300">300 (Standar)</button>
+                  <button type="button" class="calc-preset-btn" data-guests="500">500 (Gedung)</button>
+                  <button type="button" class="calc-preset-btn" data-guests="800">800 (Besar)</button>
+                  <button type="button" class="calc-preset-btn" data-guests="1200">1.200+ (Ballroom)</button>
+                </div>
+              </div>
+
+              <!-- Service Add-ons Selection -->
+              <div class="calc-field">
+                <div class="calc-field-title">
+                  <span>3. Tambahan Layanan Opsional (Add-Ons):</span>
+                  <span id="addonCountBadge" style="font-size: 11.5px; color: var(--muted); font-weight: 500;">Pilih layanan yang dibutuhkan</span>
+                </div>
+
                 <div class="calc-addons-grid">
-                  <label class="calc-addon-label">
-                    <input type="checkbox" class="calc-addon" value="4500000" data-name="Prosesi Adat Siraman & Midodareni">
-                    <span>Siraman / Midodareni (+Rp4,5 Jt)</span>
+                  <!-- Addon 1 -->
+                  <label class="calc-addon-item">
+                    <div class="calc-addon-left">
+                      <input type="checkbox" class="calc-addon" value="4500000" data-name="Prosesi Adat Siraman & Midodareni">
+                      <div class="calc-addon-info">
+                        <strong>🌸 Prosesi Adat Siraman & Midodareni</strong>
+                        <span>Termasuk baki sungkeman, tuwuhan & bleketepe, kembang setaman, serta pemandu adat.</span>
+                      </div>
+                    </div>
+                    <span class="calc-addon-price">+Rp 4,5 Jt</span>
                   </label>
-                  <label class="calc-addon-label">
-                    <input type="checkbox" class="calc-addon" value="3500000" data-name="Dokumentasi Drone Udara 4K">
-                    <span>Drone Liputan Udara 4K (+Rp3,5 Jt)</span>
+
+                  <!-- Addon 2 -->
+                  <label class="calc-addon-item">
+                    <div class="calc-addon-left">
+                      <input type="checkbox" class="calc-addon" value="3500000" data-name="Liputan Drone Cinematic 4K Udara">
+                      <div class="calc-addon-info">
+                        <strong>🚁 Liputan Drone Cinematic 4K Udara</strong>
+                        <span>Pengambilan video udara resolusi 4K untuk kirab & panorama venue outdoor / gedung.</span>
+                      </div>
+                    </div>
+                    <span class="calc-addon-price">+Rp 3,5 Jt</span>
                   </label>
-                  <label class="calc-addon-label">
-                    <input type="checkbox" class="calc-addon" value="5000000" data-name="Live Streaming & Videotron">
-                    <span>Live Streaming & LED (+Rp5,0 Jt)</span>
+
+                  <!-- Addon 3 -->
+                  <label class="calc-addon-item">
+                    <div class="calc-addon-left">
+                      <input type="checkbox" class="calc-addon" value="5000000" data-name="Live Streaming Multi-Cam & LED Screen">
+                      <div class="calc-addon-info">
+                        <strong>📺 Live Streaming Multi-Cam & LED Screen</strong>
+                        <span>Siaran langsung YouTube/Zoom Full HD 1080p dengan 3 kamera broadcast & monitor panggung.</span>
+                      </div>
+                    </div>
+                    <span class="calc-addon-price">+Rp 5,0 Jt</span>
                   </label>
-                  <label class="calc-addon-label">
-                    <input type="checkbox" class="calc-addon" value="3000000" data-name="Photobooth Unlimited Cetak 3 Jam">
-                    <span>Photobooth Unlimited (+Rp3,0 Jt)</span>
+
+                  <!-- Addon 4 -->
+                  <label class="calc-addon-item">
+                    <div class="calc-addon-left">
+                      <input type="checkbox" class="calc-addon" value="3000000" data-name="Photobooth Unlimited Cetak 3 Jam">
+                      <div class="calc-addon-info">
+                        <strong>📸 Photobooth Unlimited Cetak 3 Jam</strong>
+                        <span>Cetak foto instan kecepatan tinggi, frame kustom, properti seru, dan kru teknisi standby.</span>
+                      </div>
+                    </div>
+                    <span class="calc-addon-price">+Rp 3,0 Jt</span>
+                  </label>
+
+                  <!-- Addon 5 -->
+                  <label class="calc-addon-item">
+                    <div class="calc-addon-left">
+                      <input type="checkbox" class="calc-addon" value="2500000" data-name="Master of Ceremony (MC) Adat & Modern">
+                      <div class="calc-addon-info">
+                        <strong>🎤 Master of Ceremony (MC) Adat & Modern</strong>
+                        <span>MC profesional dwibahasa (Jawa Krama / Indonesia) berpengalaman memandu akad & resepsi.</span>
+                      </div>
+                    </div>
+                    <span class="calc-addon-price">+Rp 2,5 Jt</span>
+                  </label>
+
+                  <!-- Addon 6 -->
+                  <label class="calc-addon-item">
+                    <div class="calc-addon-left">
+                      <input type="checkbox" class="calc-addon" value="4500000" data-name="Live Acoustic Band & Sound System 5000W">
+                      <div class="calc-addon-info">
+                        <strong>🎵 Live Acoustic Band & Sound System 5000W</strong>
+                        <span>Vokalis romantis, keyboard, gitar akustik, saxophone/cajon, dan sound engineer profesional.</span>
+                      </div>
+                    </div>
+                    <span class="calc-addon-price">+Rp 4,5 Jt</span>
+                  </label>
+
+                  <!-- Addon 7 -->
+                  <label class="calc-addon-item">
+                    <div class="calc-addon-left">
+                      <input type="checkbox" class="calc-addon" value="3500000" data-name="Sesi Prewedding Studio & Cetak Kanvas 20R">
+                      <div class="calc-addon-info">
+                        <strong>👗 Sesi Prewedding Studio & Cetak Kanvas</strong>
+                        <span>Sesi pemotretan studio indoor/outdoor berkonsep + 1x cetak foto kanvas berbingkai 20R eksklusif.</span>
+                      </div>
+                    </div>
+                    <span class="calc-addon-price">+Rp 3,5 Jt</span>
+                  </label>
+
+                  <!-- Addon 8 -->
+                  <label class="calc-addon-item">
+                    <div class="calc-addon-left">
+                      <input type="checkbox" class="calc-addon" value="2500000" data-name="Dekorasi Gazebo & Lorong Bunga Masuk">
+                      <div class="calc-addon-info">
+                        <strong>🌿 Gazebo Bunga Pelaminan & Karpet Mawar</strong>
+                        <span>Instalasi canopy floral di jalur kirab pengantin dan taburan karpet kelopak bunga segar.</span>
+                      </div>
+                    </div>
+                    <span class="calc-addon-price">+Rp 2,5 Jt</span>
+                  </label>
+
+                  <!-- Addon 9 -->
+                  <label class="calc-addon-item">
+                    <div class="calc-addon-left">
+                      <input type="checkbox" class="calc-addon" value="2000000" data-name="Kru Ekstra Wedding Organizer (+4 Personil)">
+                      <div class="calc-addon-info">
+                        <strong>🛡️ Kru Ekstra Wedding Organizer (+4 Personil)</strong>
+                        <span>Pengawalan tambahan alur tamu VIP, konsumsi keluarga, dan koordinasi parkir/souvenir.</span>
+                      </div>
+                    </div>
+                    <span class="calc-addon-price">+Rp 2,0 Jt</span>
                   </label>
                 </div>
               </div>
             </div>
 
-            <!-- Calculation Output Card -->
+            <!-- Output / Live Receipt Summary Column -->
             <div class="calc-summary-card">
-              <span class="tag">SIMULASI ESTIMASI</span>
-              <div class="calc-total" id="estTotal">Rp 45 Juta</div>
-              <p class="calc-range" id="estRange">Estimasi kisaran: Rp 43 Jt – Rp 52 Jt (tergantung venue & vendor)</p>
-              
+              <div class="calc-summary-header">
+                <span class="tag">RINCIAN ESTIMASI</span>
+                <button type="button" id="calcResetBtn" class="btn-reset-calc" title="Kembalikan ke pilihan awal">
+                  ↺ Reset Add-ons
+                </button>
+              </div>
+
+              <!-- Itemized Receipt Breakdown -->
+              <div class="calc-receipt">
+                <div class="receipt-row">
+                  <span>Paket Dasar:</span>
+                  <strong id="receiptPkgName">Paket Signature</strong>
+                </div>
+                <div class="receipt-row subdued">
+                  <span>Harga Paket Dasar:</span>
+                  <span id="receiptPkgBase">Rp 35.000.000</span>
+                </div>
+                <div class="receipt-row subdued">
+                  <span>Skala Undangan:</span>
+                  <span id="receiptGuestScale">300 Tamu (Rp 0 penyesuaian)</span>
+                </div>
+                <div class="receipt-row">
+                  <span>Subtotal Add-ons (<span id="receiptAddonCount">0</span> item):</span>
+                  <strong id="receiptAddonsSubtotal">+Rp 0</strong>
+                </div>
+              </div>
+
+              <!-- Active Selected Addons List Container -->
+              <div class="active-addons-wrap" id="activeAddonsWrap" style="display:none;">
+                <span class="active-addons-label">Add-ons Terpilih:</span>
+                <div class="active-addons-tags" id="activeAddonsTags"></div>
+              </div>
+
+              <!-- Total Box -->
+              <div class="calc-total-box">
+                <span class="total-label">Total Estimasi Biaya</span>
+                <div class="calc-total" id="estTotal">Rp 35 Juta</div>
+                <p class="calc-range" id="estRange">Estimasi kisaran: Rp 33 Jt – Rp 40 Jt (tergantung venue & vendor)</p>
+              </div>
+
+              <!-- Actions -->
               <div class="calc-actions">
-                <a id="calcWaBtn" class="btn primary full" href="#" target="_blank" rel="noopener">
-                  💬 Konsultasikan Hasil Ini ke WhatsApp →
+                <a id="calcBookBtn" class="btn primary full" href="booking.html">
+                  Booking dengan Estimasi Ini →
                 </a>
-                <a id="calcBookBtn" class="btn outline-dark full" href="#">
-                  Lanjut ke Formulir Booking Resmi
+                <a id="calcWaBtn" class="btn outline-dark full" href="#" target="_blank" rel="noopener">
+                  💬 Chat WhatsApp Estimasi Ini
                 </a>
               </div>
-              <p style="font-size: 11px; color: var(--muted); margin-top: 14px; line-height: 1.4;">
-                *Nilai simulasi bersifat panduan estimasi awal. Penawaran final akan disesuaikan dengan lokasi gedung/rumah dan daftar vendor rekanan yang Anda setujui.
+
+              <p style="font-size: 11px; color: var(--muted); margin-top: 14px; line-height: 1.45; text-align: center;">
+                *Estimasi ini bersifat simulasi transparan tanpa komitmen awal. Tim planner kami akan menyusun rincian final sesuai venue gedung/kediaman dan kebutuhan spesifik Anda.
               </p>
             </div>
           </form>
