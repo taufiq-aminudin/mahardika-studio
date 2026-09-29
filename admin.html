@@ -1,7 +1,235 @@
-<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Booking | Mahardika</title><link rel="stylesheet" href="style.css"></head><body>
-<header class="site-header"><nav class="nav wrap"><a class="logo" href="index.html"><b>M</b><span>Mahardika<small>Wedding Planner & Studio</small></span></a><div class="links"><a href="index.html">Beranda</a><a href="portfolio.html">Portofolio</a><a href="services.html">Layanan</a><a href="packages.html">Paket</a><a href="contact.html">Kontak</a><a class="pill" href="booking.html">Booking</a></div></nav></header>
-<main><section class="page-hero compact"><div class="wrap narrow"><p class="kicker">ADMIN</p><h1>Permintaan<br><i>booking.</i></h1><p class="page-lead">Halaman internal sederhana untuk melihat permintaan booking yang tersimpan di browser.</p></div></section><section class="section-white"><div class="wrap"><div class="admin-head"><h2>Daftar Booking</h2><button id="clearBookings" class="btn outline-dark">Hapus Semua</button></div><div id="bookingList" class="booking-list"></div></div></section></main><footer><div class="wrap foot"><div><strong>Mahardika Wedding Planner & Studio</strong><p>Internal Admin</p></div><div><p>© <span id="year"></span> Mahardika</p></div></div></footer><script src="script.js"></script><script>
-const list=document.getElementById('bookingList');const data=JSON.parse(localStorage.getItem('mahardikaBookings')||'[]');
-if(!data.length){list.innerHTML='<div class="empty">Belum ada booking masuk.</div>'}else{list.innerHTML=data.map(b=>`<article class="booking-item"><div><span class="status">${b.status||'Pending'}</span><h3>${esc(b.name)}</h3><p>${esc(b.phone)} · ${esc(b.date)} · ${esc(b.guests||'-')} tamu</p><p><b>${esc(b.service)}</b> · ${esc(b.venue||'Lokasi belum diisi')}</p><p>${esc(b.budget||'')}</p><small>${esc(b.notes||'Tidak ada catatan')}</small></div><a class="btn dark" href="https://wa.me/6285727732902?text=${encodeURIComponent('Halo Mahardika, saya ingin menindaklanjuti booking atas nama '+b.name)}" target="_blank">WhatsApp</a></article>`).join('')}
-function esc(v){return String(v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}document.getElementById('clearBookings').onclick=()=>{if(confirm('Hapus semua booking?')){localStorage.removeItem('mahardikaBookings');location.reload()}}
-</script></body></html>
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Dashboard Booking | Mahardika Wedding</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Lewati ke konten utama</a>
+  <header class="site-header">
+    <nav class="nav wrap" aria-label="Navigasi Admin">
+      <a class="logo" href="index.html">
+        <b>M</b>
+        <span>Mahardika<small>Internal Admin Panel</small></span>
+      </a>
+      <div class="links">
+        <a href="index.html">Lihat Website</a>
+        <a href="booking.html">Formulir Booking</a>
+        <span class="pill" style="background:#3a2f2a; color:#fff !important; border-color:#3a2f2a;">Admin Mode</span>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <section class="page-hero compact">
+      <div class="wrap narrow">
+        <p class="kicker">INTERNAL DASHBOARD</p>
+        <h1>Manajemen Jadwal<br><i>& Permintaan Booking.</i></h1>
+        <p class="page-lead">Kelola seluruh data calon pengantin yang masuk melalui formulir website dan sinkronkan dengan database lokal & server.</p>
+      </div>
+    </section>
+
+    <section class="section-white">
+      <div class="wrap">
+        <!-- Dashboard Toolbar -->
+        <div class="admin-toolbar">
+          <input type="text" id="adminSearch" class="admin-search" placeholder="🔍 Cari nama pengantin, venue, atau layanan...">
+          
+          <div class="admin-stats">
+            <span class="admin-stat-chip">Total: <b id="statTotal">0</b></span>
+            <span class="admin-stat-chip" style="background:#fff7eb; color:#9d6408;">Pending: <b id="statPending">0</b></span>
+            <span class="admin-stat-chip" style="background:#f0f8ef; color:#2e7c45;">Terkonfirmasi: <b id="statConfirmed">0</b></span>
+          </div>
+
+          <div style="display:flex; gap:8px;">
+            <button id="refreshBtn" class="btn outline-dark" style="min-height:38px; padding:0 16px; font-size:12px;">🔄 Refresh</button>
+            <button id="clearBookings" class="btn outline-dark" style="min-height:38px; padding:0 16px; font-size:12px; color:#a13b3b; border-color:#dcb0b0;">Hapus Data Lokal</button>
+          </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="filters" style="margin-bottom: 22px;">
+          <button class="active" data-status-filter="all">Semua Booking</button>
+          <button data-status-filter="Pending">Menunggu Follow-up (Pending)</button>
+          <button data-status-filter="Terkonfirmasi">Terkonfirmasi (Deal)</button>
+        </div>
+
+        <!-- Bookings List Container -->
+        <div id="bookingList" class="booking-list">
+          <div class="empty">Memuat data booking...</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <div>
+        <strong>Mahardika Wedding Planner & Studio</strong>
+        <p>Panel Manajemen Internal · Rahasia & Terbatas</p>
+      </div>
+      <div>
+        <p>© <span id="year"></span> Mahardika. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    let allBookings = [];
+    let currentFilter = 'all';
+
+    async function loadBookings() {
+      const listEl = document.getElementById('bookingList');
+      let apiData = [];
+
+      try {
+        const res = await fetch('/api/bookings');
+        if (res.ok) {
+          const json = await res.json();
+          apiData = json.data || [];
+        }
+      } catch (e) {
+        console.warn('API fetch failed, fallback to localStorage', e);
+      }
+
+      const localData = JSON.parse(localStorage.getItem('mahardikaBookings') || '[]');
+
+      // Merge unique by id
+      const map = new Map();
+      [...localData, ...apiData].forEach(item => {
+        if (item && item.id) map.set(item.id, item);
+      });
+
+      allBookings = Array.from(map.values()).sort((a, b) => (b.id || 0) - (a.id || 0));
+      updateStats();
+      renderBookings();
+    }
+
+    function updateStats() {
+      document.getElementById('statTotal').textContent = allBookings.length;
+      document.getElementById('statPending').textContent = allBookings.filter(b => (b.status || 'Pending') === 'Pending').length;
+      document.getElementById('statConfirmed').textContent = allBookings.filter(b => b.status === 'Terkonfirmasi').length;
+    }
+
+    function renderBookings() {
+      const listEl = document.getElementById('bookingList');
+      const searchTerm = (document.getElementById('adminSearch')?.value || '').toLowerCase().trim();
+
+      const filtered = allBookings.filter(b => {
+        const matchesFilter = currentFilter === 'all' || (b.status || 'Pending') === currentFilter;
+        const matchesSearch = !searchTerm ||
+          (b.name && b.name.toLowerCase().includes(searchTerm)) ||
+          (b.venue && b.venue.toLowerCase().includes(searchTerm)) ||
+          (b.service && b.service.toLowerCase().includes(searchTerm)) ||
+          (b.phone && b.phone.toLowerCase().includes(searchTerm));
+        return matchesFilter && matchesSearch;
+      });
+
+      if (!filtered.length) {
+        listEl.innerHTML = '<div class="empty">Tidak ada data booking yang sesuai filter.</div>';
+        return;
+      }
+
+      listEl.innerHTML = filtered.map(b => {
+        const isConfirmed = b.status === 'Terkonfirmasi';
+        const badgeClass = isConfirmed ? 'status confirmed' : 'status pending';
+        const formattedDate = b.date ? new Date(b.date).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'Tanggal belum diisi';
+
+        return `
+          <article class="booking-item">
+            <div>
+              <span class="${badgeClass}">${esc(b.status || 'Pending')}</span>
+              <h3>${esc(b.name || 'Tanpa Nama')}</h3>
+              <p><b>📱 ${esc(b.phone || '-')}</b> · 📅 ${formattedDate} · 👥 ${esc(b.guests || '-')} Tamu</p>
+              <p><b>Layanan:</b> ${esc(b.service || '-')} · <b>Lokasi:</b> ${esc(b.venue || 'Belum diisi')}</p>
+              <p><b>Estimasi Anggaran:</b> ${esc(b.budget || 'Belum ditentukan')}</p>
+              <small style="display:block; margin-top:6px; background:#fbf8f5; padding:8px 12px; border-radius:8px; border:1px solid #ebdcd3;">
+                <b>Catatan Klien:</b> ${esc(b.notes || 'Tidak ada catatan tambahan.')}
+              </small>
+            </div>
+            <div class="booking-actions">
+              <a class="btn primary" style="min-height:36px; padding:0 16px; font-size:12px;" href="https://wa.me/62${cleanPhone(b.phone)}?text=${encodeURIComponent('Halo Kak ' + (b.name || '') + ', saya dari Tim Mahardika Wedding Planner & Studio ingin menindaklanjuti rencana pernikahan pada ' + (b.date || '') + '. Apakah ada waktu senggang untuk berdiskusi?')}" target="_blank" rel="noopener">
+                Follow-up WhatsApp →
+              </a>
+              <button class="btn outline-dark" style="min-height:34px; padding:0 12px; font-size:11px;" onclick="toggleStatus(${b.id})">
+                ${isConfirmed ? 'Tandai Pending' : '✓ Konfirmasi Booking'}
+              </button>
+              <button style="border:none; background:none; color:#b04b4b; cursor:pointer; font-size:11px; padding:4px;" onclick="deleteBooking(${b.id})">
+                Hapus
+              </button>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function cleanPhone(phone) {
+      if (!phone) return '85727732902';
+      let p = String(phone).replace(/\D/g, '');
+      if (p.startsWith('0')) p = p.slice(1);
+      return p;
+    }
+
+    function esc(v) {
+      return String(v || '').replace(/[&<>'"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
+    }
+
+    async function toggleStatus(id) {
+      const item = allBookings.find(b => b.id === id);
+      if (!item) return;
+      item.status = item.status === 'Terkonfirmasi' ? 'Pending' : 'Terkonfirmasi';
+      localStorage.setItem('mahardikaBookings', JSON.stringify(allBookings));
+
+      try {
+        await fetch(`/api/bookings/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: item.status })
+        });
+      } catch (e) {}
+
+      updateStats();
+      renderBookings();
+    }
+
+    async function deleteBooking(id) {
+      if (!confirm('Hapus data booking ini?')) return;
+      allBookings = allBookings.filter(b => b.id !== id);
+      localStorage.setItem('mahardikaBookings', JSON.stringify(allBookings));
+
+      try {
+        await fetch(`/api/bookings/${id}`, { method: 'DELETE' });
+      } catch (e) {}
+
+      updateStats();
+      renderBookings();
+    }
+
+    document.getElementById('adminSearch')?.addEventListener('input', renderBookings);
+
+    document.querySelectorAll('[data-status-filter]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-status-filter]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.statusFilter;
+        renderBookings();
+      });
+    });
+
+    document.getElementById('refreshBtn')?.addEventListener('click', loadBookings);
+
+    document.getElementById('clearBookings')?.addEventListener('click', () => {
+      if (confirm('Apakah Anda yakin ingin menghapus semua data booking di memori lokal browser?')) {
+        localStorage.removeItem('mahardikaBookings');
+        loadBookings();
+      }
+    });
+
+    loadBookings();
+  </script>
+</body>
+</html>

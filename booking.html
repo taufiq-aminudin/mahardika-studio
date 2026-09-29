@@ -1,3 +1,147 @@
-<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Booking | Mahardika Wedding Planner & Studio</title><link rel="stylesheet" href="style.css"></head><body>
-<header class="site-header"><nav class="nav wrap"><a class="logo" href="index.html"><b>M</b><span>Mahardika<small>Wedding Planner & Studio</small></span></a><div class="links"><a href="index.html">Beranda</a><a href="portfolio.html">Portofolio</a><a href="services.html">Layanan</a><a href="packages.html">Paket</a><a href="contact.html">Kontak</a><a class="pill active-pill" href="booking.html">Booking</a></div><button class="hamb">☰</button></nav></header>
-<main><section class="page-hero compact"><div class="wrap narrow"><p class="kicker">BOOKING / KONSULTASI</p><h1>Mulai dari tanggal<br><i>dan cerita Anda.</i></h1><p class="page-lead">Isi form singkat. Setelah tersimpan, Anda dapat langsung membuka WhatsApp Mahardika dengan detail booking yang sudah terisi.</p></div></section><section class="section-white"><div class="wrap booking-grid"><div class="booking-aside"><img src="assets/wedding-2.jpg" alt="Wedding consultation"><div class="aside-box"><strong>Mahardika Wedding Planner & Studio</strong><p>Jalan Raya Kranggan - Pringsurat 56271<br>Badran, Jawa Tengah</p><p><b>WhatsApp:</b> 0857-2773-2902</p></div></div><form id="bookingForm" class="form"><div class="form-title">Kirim Permintaan Booking</div><p class="form-note top">Ini adalah permintaan konsultasi, bukan pembayaran.</p><div class="two"><label>Nama Lengkap<input name="name" required placeholder="Nama calon pengantin"></label><label>No. WhatsApp<input name="phone" required placeholder="08xxxxxxxxxx"></label></div><div class="two"><label>Tanggal Acara<input type="date" name="date" required></label><label>Jumlah Tamu<input type="number" name="guests" min="1" placeholder="Contoh: 300"></label></div><label>Lokasi Acara<input name="venue" placeholder="Nama gedung / lokasi"></label><label>Layanan<select name="service" required><option value="">Pilih layanan</option><option>Wedding Planning</option><option>Wedding Decoration</option><option>Documentation</option><option>Day Coordination</option><option>Full Service</option></select></label><label>Estimasi Budget<select name="budget"><option value="">Pilih kisaran</option><option>Di bawah Rp25 juta</option><option>Rp25–50 juta</option><option>Rp50–100 juta</option><option>Di atas Rp100 juta</option><option>Belum menentukan</option></select></label><label>Catatan<textarea name="notes" rows="4" placeholder="Tema, konsep, kebutuhan khusus, dll."></textarea></label><button type="submit" class="btn dark full">Kirim Permintaan Booking</button><div id="success" class="direct-wa" hidden><div class="wa-icon">💬</div><div><strong>Permintaan tersimpan.</strong><p>Tekan tombol berikut untuk mengirim detail booking langsung ke WhatsApp <b>0857-2773-2902</b>.</p><a id="waBooking" class="wa-button" target="_blank" rel="noopener">Kirim Pesan Langsung ke WhatsApp →</a></div></div></form></div></section></main><footer><div class="wrap foot"><div><strong>Mahardika Wedding Planner & Studio</strong><p>Jalan Raya Kranggan - Pringsurat 56271 · Badran, Jawa Tengah</p></div><div><p><a href="https://wa.me/6285727732902">WhatsApp 0857-2773-2902</a></p><p>© <span id="year"></span> Mahardika</p></div></div></footer><script src="script.js"></script></body></html>
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Formulir Booking & Konsultasi | Mahardika Wedding</title>
+  <meta name="description" content="Formulir resmi booking dan konsultasi tanggal pernikahan bersama Mahardika Wedding Planner & Studio di Jawa Tengah. Respons cepat via WhatsApp resmi.">
+  <meta property="og:title" content="Formulir Booking & Konsultasi | Mahardika Wedding">
+  <meta property="og:description" content="Kirim tanggal acara dan konsep pernikahan impian Anda. Tim kami siap berdiskusi hangat dan memberikan solusi terbaik.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Lewati ke konten utama</a>
+  <header class="site-header">
+    <nav class="nav wrap" aria-label="Navigasi Utama">
+      <a class="logo" href="index.html">
+        <b>M</b>
+        <span>Mahardika<small>Wedding Planner & Studio</small></span>
+      </a>
+      <div class="links">
+        <a href="index.html">Beranda</a>
+        <a href="portfolio.html">Portofolio</a>
+        <a href="services.html">Layanan</a>
+        <a href="packages.html">Paket & Biaya</a>
+        <a href="index.html#faq">FAQ</a>
+        <a href="contact.html">Kontak</a>
+        <a class="pill active-pill" href="booking.html">Booking</a>
+      </div>
+      <button class="hamb" aria-label="Buka menu navigasi" aria-expanded="false">☰</button>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <section class="page-hero compact">
+      <div class="wrap narrow">
+        <p class="kicker">BOOKING / KONSULTASI RESMI</p>
+        <h1>Mulai dari tanggal<br><i>dan cerita impian Anda.</i></h1>
+        <p class="page-lead">Isi formulir singkat di bawah ini. Permintaan Anda akan tersimpan otomatis dan Anda dapat langsung terhubung ke WhatsApp representatif Mahardika untuk pengecekan tanggal & sesi konsultasi cuma-cuma.</p>
+      </div>
+    </section>
+
+    <section class="section-white">
+      <div class="wrap booking-grid">
+        <div class="booking-aside">
+          <img src="assets/wedding-2.jpg" alt="Konsultasi pernikahan hangat Mahardika" loading="lazy" width="450" height="520">
+          <div class="aside-box">
+            <strong>Mahardika Wedding Planner & Studio</strong>
+            <p>Jalan Raya Kranggan - Pringsurat 56271<br>Badran, Temanggung / Magelang, Jawa Tengah</p>
+            <p><b>WhatsApp Resmi:</b> 0857-2773-2902</p>
+            <div style="margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--line); font-size: 12px; color: var(--muted);">
+              <span style="display:block; margin-bottom:4px;">✨ <b>Konsultasi Gratis:</b> Tanpa komitmen di awal</span>
+              <span style="display:block; margin-bottom:4px;">⚡ <b>Respons Cepat:</b> Jam kerja 08.00 – 20.00 WIB</span>
+              <span style="display:block;">🔒 <b>Privasi Terjaga:</b> Data Anda tersimpan aman</span>
+            </div>
+          </div>
+        </div>
+
+        <form id="bookingForm" class="form">
+          <div class="form-title">Formulir Rencana Pernikahan</div>
+          <p class="form-note top">Ini adalah pengajuan rencana konsultasi awal, bukan transaksi pembayaran langsung.</p>
+
+          <div class="two">
+            <label for="nameInput">Nama Lengkap Calon Pengantin
+              <input id="nameInput" name="name" required placeholder="Contoh: Nabila & Rian">
+            </label>
+            <label for="phoneInput">Nomor WhatsApp Aktif
+              <input id="phoneInput" name="phone" type="tel" required placeholder="Contoh: 081234567890">
+            </label>
+          </div>
+
+          <div class="two">
+            <label for="dateInput">Estimasi / Rencana Tanggal Acara
+              <input id="dateInput" type="date" name="date" required>
+            </label>
+            <label for="guestsInput">Estimasi Jumlah Undangan / Tamu
+              <input id="guestsInput" type="number" name="guests" min="20" max="5000" placeholder="Contoh: 300 tamu">
+            </label>
+          </div>
+
+          <label for="venueInput">Rencana Lokasi / Nama Venue
+            <input id="venueInput" name="venue" placeholder="Contoh: Gedung Tri Dharma Temanggung / Rumah Pribadi / Hotel">
+          </label>
+
+          <label for="serviceSelect">Pilihan Layanan / Paket
+            <select id="serviceSelect" name="service" required>
+              <option value="">-- Pilih Layanan Utama --</option>
+              <option value="Paket Essential (Intimate · Rp15 Jt)">Paket Essential (Intimate · Mulai Rp15 Juta)</option>
+              <option value="Paket Signature (Lengkap · Rp35 Jt)">Paket Signature (Lengkap Terpopuler · Mulai Rp35 Juta)</option>
+              <option value="Paket Mahardika Full Service">Paket Mahardika Full Service (All-in VIP)</option>
+              <option value="Wedding Planning Saja">Wedding Planning Saja (Konsep & Vendor)</option>
+              <option value="Wedding Decoration Saja">Wedding Decoration Saja (Pelaminan & Aisle)</option>
+              <option value="Dokumentasi Foto & Video Saja">Dokumentasi Foto & Video Saja</option>
+              <option value="Day-of Coordination Saja (WO)">Day-of Coordination Saja (WO Hari H)</option>
+            </select>
+          </label>
+
+          <label for="budgetSelect">Estimasi Alokasi Anggaran (Budget)
+            <select id="budgetSelect" name="budget">
+              <option value="">-- Pilih Kisaran Alokasi Budget --</option>
+              <option value="Di bawah Rp25 juta">Di bawah Rp25 juta</option>
+              <option value="Rp25–50 juta">Rp25–50 juta</option>
+              <option value="Rp50–100 juta">Rp50–100 juta</option>
+              <option value="Di atas Rp100 juta">Di atas Rp100 juta</option>
+              <option value="Belum menentukan">Belum menentukan / Ingin rekomendasi</option>
+            </select>
+          </label>
+
+          <label for="notesInput">Catatan Tambahan & Konsep Impian
+            <textarea id="notesInput" name="notes" rows="4" placeholder="Ceritakan konsep impian Anda: misal adat Jawa panggih, modern minimalis, nuansa warna favorit, atau kebutuhan khusus lainnya."></textarea>
+          </label>
+
+          <button type="submit" class="btn dark full" style="font-size: 14.5px; padding: 15px;">
+            Kirim Pengajuan Booking & Konsultasi →
+          </button>
+
+          <!-- Success message & WhatsApp Button -->
+          <div id="success" class="direct-wa" hidden>
+            <div class="wa-icon" aria-hidden="true">💬</div>
+            <div>
+              <strong>Permintaan Anda Berhasil Tersimpan!</strong>
+              <p>Data jadwal acara telah kami catat. Klik tombol di bawah ini untuk membuka WhatsApp resmi Mahardika dan melanjutkan konsultasi langsung:</p>
+              <a id="waBooking" class="wa-button" target="_blank" rel="noopener">
+                Buka & Kirim Rincian ke WhatsApp Resmi Sekarang →
+              </a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <div>
+        <strong>Mahardika Wedding Planner & Studio</strong>
+        <p>Jalan Raya Kranggan - Pringsurat 56271 · Badran, Jawa Tengah</p>
+      </div>
+      <div>
+        <p><a href="https://wa.me/6285727732902">WhatsApp: 0857-2773-2902</a></p>
+        <p>© <span id="year"></span> Mahardika Wedding Planner & Studio. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
